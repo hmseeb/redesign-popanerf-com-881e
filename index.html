@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pop-A-Nerf Entertainment | Mobile Nerf War Arena — We Bring the Battle to You</title>
+  <meta name="description" content="Pop-A-Nerf Entertainment builds a fully enclosed mobile Nerf War arena at your location — blasters, darts, eyewear, barricades and a dedicated Battle Referee included. Two hours of nonstop, fully hosted action. Call 786-671-NERF (6373).">
+  <meta property="og:title" content="Pop-A-Nerf Entertainment | The Ultimate Mobile Nerf War Experience">
+  <meta property="og:description" content="We construct a completely enclosed Nerf War arena at your location. Blasters, darts, eye protection and a dedicated Nerf Battle Referee — all included. Book your adventure today.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#0a0b10">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0b10'/%3E%3Cpath d='M36 6 12 38h12l-2 20 24-32H34l2-20z' fill='%23ff6a00'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0a0b10;
+      --bg-2:#10121a;
+      --bg-3:#161a24;
+      --ink:#f4f2ec;
+      --ink-dim:#b9b6ad;
+      --muted:#7d8290;
+      --orange:#ff6a00;
+      --orange-2:#ffb200;
+      --line:rgba(244,242,236,.12);
+      --radius:18px;
+      --font-display:'Anton',Impact,sans-serif;
+      --font-body:'Archivo',system-ui,sans-serif;
+      --pad:clamp(1.25rem,4vw,4rem);
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      background:var(--bg);
+      color:var(--ink);
+      font-family:var(--font-body);
+      line-height:1.6;
+      overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
+    }
+    img{max-width:100%;display:block}
+    a{color:inherit;text-decoration:none}
+    ul{list-style:none}
+    ::selection{background:var(--orange);color:#0a0b10}
+
+    h1,h2,h3,.display{
+      font-family:var(--font-display);
+      font-weight:400;
+      text-transform:uppercase;
+      line-height:.95;
+      letter-spacing:.01em;
+    }
+    .container{width:min(1200px,100% - var(--pad)*2);margin-inline:auto}
+    section{padding:clamp(4.5rem,9vw,8rem) 0;position:relative}
+
+    /* ---------- reveal animation ---------- */
+    .reveal{opacity:0;transform:translateY(34px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+    .reveal.in{opacity:1;transform:none}
+    .d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}
+    @media (prefers-reduced-motion:reduce){
+      .reveal{opacity:1;transform:none;transition:none}
+      html{scroll-behavior:auto}
+    }
+
+    /* ---------- header ---------- */
+    header{
+      position:fixed;inset:0 0 auto 0;z-index:100;
+      transition:background .35s,box-shadow .35s,backdrop-filter .35s;
+    }
+    header.scrolled{
+      background:rgba(10,11,16,.86);
+      backdrop-filter:blur(14px);
+      box-shadow:0 1px 0 var(--line),0 12px 40px rgba(0,0,0,.45);
+    }
+    .nav-inner{
+      width:min(1320px,100% - var(--pad)*2);margin-inline:auto;
+      display:flex;align-items:center;justify-content:space-between;gap:1.5rem;
+      padding:1rem 0;
+    }
+    .logo{display:flex;align-items:center;gap:.7rem}
+    .logo-bolt{width:38px;height:38px;flex:none;filter:drop-shadow(0 0 12px rgba(255,106,0,.55))}
+    .logo-text{font-family:var(--font-display);font-size:1.35rem;letter-spacing:.04em;line-height:.85;text-transform:uppercase}
+    .logo-text small{display:block;font-family:var(--font-body);font-weight:700;font-size:.58rem;letter-spacing:.42em;color:var(--orange)}
+    nav.desktop{display:flex;gap:1.9rem;align-items:center}
+    nav.desktop a{font-weight:700;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-dim);position:relative;padding:.35rem 0;transition:color .25s}
+    nav.desktop a::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--orange);transition:width .3s}
+    nav.desktop a:hover{color:var(--ink)}
+    nav.desktop a:hover::after{width:100%}
+    .nav-cta{display:flex;align-items:center;gap:1rem}
+    .nav-phone{font-weight:800;font-size:.8rem;letter-spacing:.1em;color:var(--ink);white-space:nowrap}
+    .nav-phone span{color:var(--orange)}
+    .burger{display:none;background:none;border:0;cursor:pointer;padding:.5rem;z-index:110}
+    .burger span{display:block;width:26px;height:2px;background:var(--ink);margin:6px 0;transition:.35s}
+    .burger.open span:nth-child(1){transform:translateY(8px) rotate(45deg)}
+    .burger.open span:nth-child(2){opacity:0}
+    .burger.open span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+    .mobile-nav{
+      position:fixed;inset:0;background:rgba(10,11,16,.97);z-index:99;
+      display:flex;flex-direction:column;justify-content:center;gap:.4rem;padding:var(--pad);
+      transform:translateY(-100%);transition:transform .5s cubic-bezier(.16,1,.3,1);
+    }
+    .mobile-nav.open{transform:none}
+    .mobile-nav a{font-family:var(--font-display);font-size:clamp(2rem,8vw,3rem);text-transform:uppercase;color:var(--ink);padding:.35rem 0;border-bottom:1px solid var(--line)}
+    .mobile-nav a:hover{color:var(--orange)}
+
+    /* ---------- buttons ---------- */
+    .btn{
+      display:inline-flex;align-items:center;gap:.65rem;
+      font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:.82rem;
+      padding:1.05rem 1.9rem;border-radius:999px;border:2px solid transparent;
+      transition:transform .25s,box-shadow .25s,background .25s,color .25s,border-color .25s;
+      cursor:pointer;white-space:nowrap;
+    }
+    .btn-primary{background:var(--orange);color:#0a0b10;box-shadow:0 10px 34px rgba(255,106,0,.35)}
+    .btn-primary:hover{transform:translateY(-3px);box-shadow:0 16px 44px rgba(255,106,0,.5);background:var(--orange-2)}
+    .btn-ghost{border-color:rgba(244,242,236,.28);color:var(--ink)}
+    .btn-ghost:hover{border-color:var(--orange);color:var(--orange);transform:translateY(-3px)}
+    .btn svg{flex:none}
+
+    /* ---------- hero ---------- */
+    .hero{
+      min-height:100svh;display:flex;align-items:center;
+      padding:clamp(7rem,12vh,9rem) 0 clamp(4rem,7vh,6rem);
+      position:relative;overflow:hidden;
+      background:
+        radial-gradient(58rem 38rem at 82% -8%,rgba(255,106,0,.20),transparent 62%),
+        radial-gradient(42rem 30rem at -10% 108%,rgba(255,178,0,.10),transparent 60%),
+        var(--bg);
+    }
+    .hero::after{
+      content:"POP!";
+      position:absolute;right:-.06em;bottom:-.24em;
+      font-family:var(--font-display);font-size:clamp(9rem,26vw,24rem);line-height:1;
+      color:transparent;-webkit-text-stroke:2px rgba(255,106,0,.16);
+      pointer-events:none;user-select:none;
+    }
+    .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(2.5rem,5vw,5rem);align-items:center;position:relative;z-index:2}
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:.7rem;
+      font-size:.75rem;font-weight:800;letter-spacing:.3em;text-transform:uppercase;color:var(--orange-2);
+      margin-bottom:1.6rem;
+    }
+    .eyebrow::before{content:"";width:34px;height:2px;background:var(--orange)}
+    .pulse-dot{width:9px;height:9px;border-radius:50%;background:var(--orange);box-shadow:0 0 0 0 rgba(255,106,0,.6);animation:pulse 1.8s infinite}
+    @keyframes pulse{70%{box-shadow:0 0 0 12px rgba(255,106,0,0)}100%{box-shadow:0 0 0 0 rgba(255,106,0,0)}}
+    .hero h1{font-size:clamp(3rem,7.4vw,6.4rem);margin-bottom:1.4rem}
+    .hero h1 .pop{color:var(--orange);display:inline-block;transform:rotate(-3deg)}
+    .hero h1 .grad{
+      background:linear-gradient(92deg,var(--orange) 10%,var(--orange-2) 90%);
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+      filter:drop-shadow(0 6px 26px rgba(255,106,0,.35));
+    }
+    .hero .lead{color:var(--ink-dim);font-size:clamp(1.02rem,1.5vw,1.18rem);max-width:34rem;margin-bottom:2.3rem}
+    .hero .lead strong{color:var(--ink)}
+    .hero-ctas{display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:2.4rem}
+    .hero-stats{display:flex;flex-wrap:wrap;gap:.6rem}
+    .stat-chip{
+      border:1px solid var(--line);border-radius:999px;padding:.5rem 1.05rem;
+      font-size:.74rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-dim);
+      background:rgba(255,255,255,.03);
+    }
+    .stat-chip b{color:var(--orange-2);font-weight:800}
+
+    .hero-visual{position:relative}
+    .hero-img-main{
+      border-radius:var(--radius);overflow:hidden;position:relative;
+      border:1px solid var(--line);
+      box-shadow:0 34px 80px rgba(0,0,0,.55);
+      transform:rotate(1.6deg);
+    }
+    .hero-img-main::before{content:"";position:absolute;inset:0;background:linear-gradient(200deg,transparent 55%,rgba(10,11,16,.55));z-index:1}
+    .hero-img-main img{width:100%;height:clamp(300px,42vw,470px);object-fit:cover;transition:transform 1.2s cubic-bezier(.16,1,.3,1)}
+    .hero-visual:hover .hero-img-main img{transform:scale(1.05)}
+    .hero-img-main .tag{
+      position:absolute;left:1.1rem;bottom:1.1rem;z-index:2;
+      font-family:var(--font-display);text-transform:uppercase;font-size:.95rem;letter-spacing:.06em;
+      background:var(--orange);color:#0a0b10;padding:.5rem 1rem;border-radius:8px;transform:rotate(-2deg);
+      box-shadow:0 10px 26px rgba(255,106,0,.4);
+    }
+    .hero-card{
+      position:absolute;left:-8%;bottom:-7%;width:min(72%,360px);
+      background:var(--bg-3);border:1px solid var(--line);border-radius:14px;padding:.7rem;
+      transform:rotate(-3.5deg);box-shadow:0 24px 60px rgba(0,0,0,.55);
+      transition:transform .4s;
+    }
+    .hero-card:hover{transform:rotate(-1deg) translateY(-6px)}
+    .hero-card img{border-radius:9px;width:100%;object-fit:cover}
+    .hero-frame{position:absolute;inset:-1.1rem auto auto -1.1rem;width:96px;height:96px;border-top:4px solid var(--orange);border-left:4px solid var(--orange);border-radius:10px 0 0 0;opacity:.85}
+
+    /* ---------- marquee ---------- */
+    .marquee{
+      background:var(--orange);color:#0a0b10;overflow:hidden;
+      transform:rotate(-1.2deg) scale(1.02);margin:1rem -1rem 0;
+      border-block:3px solid #0a0b10;
+      position:relative;z-index:3;
+    }
+    .marquee-track{display:flex;width:max-content;animation:scroll 26s linear infinite;padding:.85rem 0}
+    .marquee-track span{
+      font-family:var(--font-display);text-transform:uppercase;font-size:1.05rem;letter-spacing:.06em;
+      padding:0 1.6rem;white-space:nowrap;display:flex;align-items:center;gap:1.6rem;
+    }
+    .marquee-track span::after{content:"✦"}
+    @keyframes scroll{to{transform:translateX(-50%)}}
+    @media (prefers-reduced-motion:reduce){.marquee-track{animation:none}}
+
+    /* ---------- section headers ---------- */
+    .label{
+      display:inline-flex;align-items:center;gap:.7rem;
+      font-size:.72rem;font-weight:800;letter-spacing:.34em;text-transform:uppercase;color:var(--orange);
+      margin-bottom:1.1rem;
+    }
+    .label::before{content:"";width:28px;height:2px;background:var(--orange)}
+    .h2{font-size:clamp(2.1rem,4.6vw,3.6rem);margin-bottom:1.2rem;max-width:22ch}
+    .sub{color:var(--ink-dim);max-width:44rem;font-size:clamp(.98rem,1.3vw,1.1rem)}
+    .sub strong{color:var(--ink)}
+
+    /* ---------- experience ---------- */
+    .experience{background:var(--bg-2);position:relative}
+    .experience::before{content:"";position:absolute;inset:0;background:radial-gradient(46rem 30rem at 8% 0%,rgba(255,106,0,.07),transparent 60%);pointer-events:none}
+    .exp-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2.5rem,5vw,4.5rem);align-items:start}
+    .gear-chips{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.8rem}
+    .gear-chip{
+      display:inline-flex;align-items:center;gap:.55rem;
+      background:rgba(255,106,0,.09);border:1px solid rgba(255,106,0,.35);color:var(--orange-2);
+      border-radius:999px;padding:.5rem 1.05rem;font-size:.76rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+    }
+    .exp-collage{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+    .exp-collage figure{
+      border-radius:14px;overflow:hidden;border:1px solid var(--line);position:relative;
+      box-shadow:0 18px 44px rgba(0,0,0,.4);
+    }
+    .exp-collage figure:nth-child(2){transform:translateY(1.6rem)}
+    .exp-collage figure:nth-child(4){transform:translateY(1.6rem)}
+    .exp-collage img{width:100%;height:230px;object-fit:cover;transition:transform .9s cubic-bezier(.16,1,.3,1)}
+    .exp-collage figure:hover img{transform:scale(1.07)}
+    .exp-collage figcaption{
+      position:absolute;inset:auto 0 0 0;padding:.55rem .9rem;font-size:.68rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;
+      background:linear-gradient(transparent,rgba(10,11,16,.88));
+    }
+    .what-we-do{
+      margin-top:clamp(3rem,6vw,4.5rem);
+      border:1px solid var(--line);border-radius:var(--radius);
+      background:linear-gradient(120deg,rgba(255,106,0,.1),transparent 45%),var(--bg-3);
+      padding:clamp(1.8rem,4vw,3rem);
+      display:grid;grid-template-columns:auto 1fr;gap:clamp(1.5rem,3vw,3rem);align-items:center;
+    }
+    .what-we-do .big{font-family:var(--font-display);font-size:clamp(1.7rem,3.6vw,2.8rem);text-transform:uppercase;line-height:1;max-width:12ch}
+    .what-we-do .big em{font-style:normal;color:var(--orange)}
+    .loc-chips{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:1.1rem}
+    .loc-chip{border:1px solid var(--line);border-radius:999px;padding:.42rem .95rem;font-size:.74rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-dim)}
+
+    /* ---------- zones ---------- */
+    .zones{background:var(--bg)}
+    .zone-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;margin-top:3rem}
+    .zone-card{
+      border-radius:var(--radius);overflow:hidden;position:relative;border:1px solid var(--line);
+      aspect-ratio:3/4;display:flex;align-items:flex-end;
+      transition:transform .45s cubic-bezier(.16,1,.3,1),box-shadow .45s,border-color .45s;
+    }
+    .zone-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.16,1,.3,1)}
+    .zone-card::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 38%,rgba(10,11,16,.94) 86%)}
+    .zone-card:hover{transform:translateY(-10px);border-color:rgba(255,106,0,.6);box-shadow:0 26px 60px rgba(0,0,0,.55),0 0 0 1px rgba(255,106,0,.25)}
+    .zone-card:hover img{transform:scale(1.08)}
+    .zone-body{position:relative;z-index:2;padding:1.4rem;width:100%}
+    .zone-body h3{font-size:1.5rem;margin-bottom:.35rem}
+    .zone-body p{font-size:.83rem;color:var(--ink-dim);margin-bottom:.9rem}
+    .zone-link{display:inline-flex;align-items:center;gap:.5rem;font-size:.72rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--orange-2)}
+    .zone-link svg{transition:transform .3s}
+    .zone-card:hover .zone-link svg{transform:translateX(6px)}
+
+    /* ---------- included ---------- */
+    .included{background:var(--bg-2)}
+    .include-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-top:2.6rem}
+    .include-item{
+      display:flex;gap:1.1rem;align-items:flex-start;
+      border:1px solid var(--line);border-radius:14px;padding:1.3rem 1.4rem;background:rgba(255,255,255,.025);
+      transition:border-color .3s,transform .3s,background .3s;
+    }
+    .include-item:hover{border-color:rgba(255,106,0,.55);transform:translateX(6px);background:rgba(255,106,0,.05)}
+    .check{
+      flex:none;width:34px;height:34px;border-radius:50%;
+      background:linear-gradient(135deg,var(--orange),var(--orange-2));
+      display:grid;place-items:center;color:#0a0b10;
+      box-shadow:0 6px 18px rgba(255,106,0,.4);
+    }
+    .include-item p{font-size:.95rem;color:var(--ink-dim)}
+    .include-item p b{color:var(--ink);display:block;margin-bottom:.1rem;font-weight:800}
+
+    /* ---------- pricing ---------- */
+    .pricing{background:var(--bg);overflow:hidden}
+    .pricing::before{
+      content:"";position:absolute;inset:0;pointer-events:none;
+      background:radial-gradient(52rem 34rem at 92% 12%,rgba(255,106,0,.08),transparent 60%);
+    }
+    .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:3rem}
+    .price-card{
+      border:1px solid var(--line);border-radius:var(--radius);padding:2rem 1.8rem;position:relative;
+      background:linear-gradient(160deg,rgba(255,255,255,.04),transparent 55%),var(--bg-3);
+      transition:transform .4s cubic-bezier(.16,1,.3,1),border-color .4s,box-shadow .4s;
+    }
+    .price-card:hover{transform:translateY(-8px);border-color:rgba(255,106,0,.6);box-shadow:0 24px 54px rgba(0,0,0,.5)}
+    .price-card .players{font-size:.78rem;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:.9rem}
+    .price-card .amount{font-family:var(--font-display);font-size:clamp(2.6rem,4vw,3.4rem);line-height:1}
+    .price-card .amount sup{font-size:.45em;vertical-align:.85em;color:var(--orange-2)}
+    .price-card .note{margin-top:.8rem;font-size:.82rem;color:var(--muted)}
+    .price-card.featured{border-color:var(--orange);background:linear-gradient(160deg,rgba(255,106,0,.14),transparent 60%),var(--bg-3)}
+    .flag{
+      position:absolute;top:-13px;right:1.4rem;background:var(--orange);color:#0a0b10;
+      font-family:var(--font-display);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+      padding:.4rem .9rem;border-radius:6px;transform:rotate(2deg);box-shadow:0 8px 20px rgba(255,106,0,.4);
+    }
+    .price-card.special{background:linear-gradient(140deg,var(--orange),var(--orange-2));color:#0a0b10;border:0}
+    .price-card.special .players,.price-card.special .note{color:rgba(10,11,16,.75)}
+    .price-card.special .amount{font-size:clamp(1.7rem,2.6vw,2.2rem);line-height:1.05}
+    .pricing-cta{display:flex;flex-wrap:wrap;gap:1rem;margin-top:2.6rem;align-items:center}
+    .call-banner{
+      margin-top:1.2rem;display:inline-flex;align-items:center;gap:.8rem;
+      font-family:var(--font-display);font-size:clamp(1.3rem,3vw,1.9rem);letter-spacing:.04em;text-transform:uppercase;
+    }
+    .call-banner span{color:var(--orange)}
+    .call-banner:hover span{color:var(--orange-2)}
+
+    /* ---------- upgrades ---------- */
+    .upgrades{background:var(--bg-2)}
+    .up-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.3rem;margin-top:3rem}
+    .up-card{
+      border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--bg-3);
+      display:flex;flex-direction:column;
+      transition:transform .4s cubic-bezier(.16,1,.3,1),border-color .4s,box-shadow .4s;
+    }
+    .up-card:hover{transform:translateY(-8px);border-color:rgba(255,106,0,.6);box-shadow:0 26px 56px rgba(0,0,0,.5)}
+    .up-media{position:relative;aspect-ratio:16/10;overflow:hidden}
+    .up-media img{width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.16,1,.3,1)}
+    .up-card:hover .up-media img{transform:scale(1.08)}
+    .up-media::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 60%,rgba(16,18,26,.9))}
+    .up-price{
+      position:absolute;left:1rem;bottom:1rem;z-index:2;
+      font-family:var(--font-display);text-transform:uppercase;font-size:.85rem;letter-spacing:.06em;
+      background:var(--orange);color:#0a0b10;padding:.42rem .85rem;border-radius:7px;transform:rotate(-2deg);
+    }
+    .up-body{padding:1.4rem 1.4rem 1.6rem;display:flex;flex-direction:column;gap:.55rem;flex:1}
+    .up-body h3{font-size:1.25rem}
+    .up-body p{font-size:.88rem;color:var(--ink-dim)}
+    .up-tag{align-self:flex-start;margin-top:auto;font-size:.66rem;font-weight:800;letter-spacing:.24em;text-transform:uppercase;color:var(--orange-2)}
+
+    /* ---------- reviews ---------- */
+    .reviews{
+      background:linear-gradient(120deg,var(--orange) 0%,var(--orange-2) 100%);
+      color:#0a0b10;transform:rotate(-1.2deg) scale(1.03);margin-block:2rem;
+      box-shadow:0 30px 80px rgba(255,106,0,.28);
+    }
+    .reviews .inner{transform:rotate(1.2deg)}
+    .reviews-flex{display:flex;gap:clamp(2rem,5vw,4.5rem);align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .reviews h2{font-size:clamp(2.2rem,5vw,4rem);max-width:14ch}
+    .reviews p{font-weight:700;max-width:34rem;margin-top:1rem;color:rgba(10,11,16,.78)}
+    .reviews .btn-dark{background:#0a0b10;color:var(--orange-2);box-shadow:0 14px 40px rgba(10,11,16,.35)}
+    .reviews .btn-dark:hover{transform:translateY(-3px);color:#fff}
+    .review-badge{width:min(100%,190px);border-radius:12px;box-shadow:0 20px 50px rgba(10,11,16,.35);transform:rotate(3deg);transition:transform .4s}
+    .review-badge:hover{transform:rotate(0) scale(1.04)}
+    .stars{font-size:1.4rem;letter-spacing:.2em;margin-bottom:.9rem}
+
+    /* ---------- final cta ---------- */
+    .final{background:var(--bg);text-align:center;overflow:hidden}
+    .final::before{
+      content:"BATTLE";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+      font-family:var(--font-display);font-size:clamp(8rem,26vw,22rem);color:transparent;
+      -webkit-text-stroke:1.5px rgba(255,106,0,.12);pointer-events:none;user-select:none;white-space:nowrap;
+    }
+    .final .h2{margin-inline:auto;max-width:20ch}
+    .final .sub{margin:0 auto 2.4rem}
+    .final-inner{position:relative;z-index:2}
+
+    /* ---------- footer ---------- */
+    footer{background:#07080c;border-top:1px solid var(--line);padding:clamp(3rem,6vw,4.5rem) 0 2rem}
+    .foot-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:clamp(2rem,5vw,4rem)}
+    .foot-grid h4{font-family:var(--font-display);text-transform:uppercase;font-size:.95rem;letter-spacing:.12em;margin-bottom:1.1rem;color:var(--orange-2)}
+    .foot-grid li{margin-bottom:.55rem}
+    .foot-grid a{font-size:.9rem;color:var(--ink-dim);transition:color .25s,padding-left .25s}
+    .foot-grid a:hover{color:var(--orange);padding-left:6px}
+    .foot-brand p{color:var(--muted);font-size:.92rem;max-width:30rem;margin:1rem 0 1.4rem}
+    .foot-phone{font-family:var(--font-display);font-size:clamp(1.5rem,3vw,2rem);text-transform:uppercase;letter-spacing:.03em}
+    .foot-phone span{color:var(--orange)}
+    .foot-bottom{
+      margin-top:3rem;padding-top:1.6rem;border-top:1px solid var(--line);
+      display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;
+      font-size:.78rem;color:var(--muted);letter-spacing:.06em;
+    }
+
+    /* ---------- responsive ---------- */
+    @media (max-width:1020px){
+      .hero-grid{grid-template-columns:1fr}
+      .hero-visual{max-width:640px}
+      .hero-card{left:auto;right:-4%}
+      .zone-grid{grid-template-columns:repeat(2,1fr)}
+      .price-grid{grid-template-columns:repeat(2,1fr)}
+      .exp-grid{grid-template-columns:1fr}
+      .foot-grid{grid-template-columns:1fr 1fr}
+    }
+    @media (max-width:760px){
+      nav.desktop,.nav-phone{display:none}
+      .burger{display:block}
+      .include-grid{grid-template-columns:1fr}
+      .what-we-do{grid-template-columns:1fr}
+      .exp-collage img{height:190px}
+      .hero::after{font-size:34vw}
+    }
+    @media (max-width:560px){
+      .zone-grid{grid-template-columns:1fr}
+      .zone-card{aspect-ratio:4/3}
+      .price-grid{grid-template-columns:1fr}
+      .foot-grid{grid-template-columns:1fr}
+      .hero-card{position:relative;left:0;right:0;bottom:0;width:100%;margin-top:1.2rem;transform:none}
+      .btn{padding:.95rem 1.5rem;font-size:.78rem}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===================== HEADER ===================== -->
+  <header id="site-header">
+    <div class="nav-inner">
+      <a class="logo" href="#top" aria-label="Pop-A-Nerf Entertainment home">
+        <svg class="logo-bolt" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#161a24"/><path d="M36 6 12 38h12l-2 20 24-32H34l2-20z" fill="#ff6a00"/></svg>
+        <span class="logo-text">Pop-A-Nerf<small>Entertainment</small></span>
+      </a>
+      <nav class="desktop" aria-label="Primary">
+        <a href="#experience">Experience</a>
+        <a href="#zones">Battle Zones</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#upgrades">Upgrades</a>
+        <a href="#reviews">Reviews</a>
+      </nav>
+      <div class="nav-cta">
+        <a class="nav-phone" href="tel:+17866716373"><span>☎</span> 786-671-NERF</a>
+        <a class="btn btn-primary" href="https://www.popanerf.com/book-now">Book Now</a>
+        <button class="burger" id="burger" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-nav" id="mobile-nav">
+    <a href="#experience">Experience</a>
+    <a href="#zones">Battle Zones</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#upgrades">Upgrades</a>
+    <a href="#reviews">Reviews</a>
+    <a href="https://www.popanerf.com/book-now" style="color:var(--orange)">Book Now</a>
+    <a href="tel:+17866716373">☎ 786-671-NERF</a>
+  </div>
+
+  <main id="top">
+
+    <!-- ===================== HERO ===================== -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <p class="eyebrow reveal"><span class="pulse-dot"></span> Mobile Nerf War Arena</p>
+          <h1 class="reveal d1">We bring the <span class="grad">ultimate Nerf&nbsp;War</span> experience <span class="pop">right to you!</span></h1>
+          <p class="lead reveal d2">A <strong>completely enclosed Nerf War arena</strong> built at your location — barricades, bases, and a fully stocked armory. Two full hours inside a real battlefield. <strong>No downtime. Just action.</strong></p>
+          <div class="hero-ctas reveal d3">
+            <a class="btn btn-primary" href="https://www.popanerf.com/book-now">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              Book Now
+            </a>
+            <a class="btn btn-ghost" href="tel:+17866716373">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              Call 786-671-NERF
+            </a>
+          </div>
+          <div class="hero-stats reveal d4">
+            <span class="stat-chip"><b>2 hrs</b> hosted gameplay</span>
+            <span class="stat-chip"><b>All gear</b> included</span>
+            <span class="stat-chip"><b>Battle referee</b> on site</span>
+          </div>
+        </div>
+
+        <div class="hero-visual reveal d2">
+          <div class="hero-frame" aria-hidden="true"></div>
+          <div class="hero-img-main">
+            <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQVW4AQlUDAbpJXFi38v6Cy6MXMbHxGdvIC4n43I-i2USaxDqxAjbiaV2emjLFFquIhBjtIYM5ghWIgMdL1635x4gZad07Rb2M-Wgz5oppb--nnn3mRpvOpK5VEKGaEkcBQuBaSNbTz6Izeu2CF99syxXz9IgcofHy2VLrnKdwyAA-2YEV1dy-QM7joDcOFvBtTDKrNA5ko1r9F9HCQzfgrIOmduEGfJPBo0IHYF8XU=w1280" alt="Players mid-battle inside a Pop-A-Nerf enclosed mobile Nerf war arena" loading="eager">
+            <span class="tag">100% Mobile Arena</span>
+          </div>
+          <div class="hero-card">
+            <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQUwv_P1C4azBH19ZvQPYxLBorQD7xZbL1hNiX_mykkwyXLlWseMx45XzW_KtOQN9OKjTnfTmlx07A6qHn9u0CY4qZTebvHYeWaTGneCNX2-KpRi1rQNKB4hIDk1u7IdFg5-IUeYZlpOaxpGXte6dO0HdiFsYyg1QsZ-mn-yk1pPmKk938yA-7_TxHyHru6YQB2eYS3WVbvRELpHeGNyKX4qtFHmZR2gajUhIqeKrX0=w1280" alt="Pop-A-Nerf Entertainment logo" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== MARQUEE ===================== -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>Fully hosted battles</span><span>We come to you</span><span>2 hours nonstop</span><span>All gear included</span><span>Battle referee included</span><span>Birthdays · Corporate · Youth groups</span>
+        <span>Fully hosted battles</span><span>We come to you</span><span>2 hours nonstop</span><span>All gear included</span><span>Battle referee included</span><span>Birthdays · Corporate · Youth groups</span>
+      </div>
+    </div>
+
+    <!-- ===================== EXPERIENCE ===================== -->
+    <section class="experience" id="experience">
+      <div class="container">
+        <div class="exp-grid">
+          <div>
+            <p class="label reveal">The Experience</p>
+            <h2 class="h2 reveal d1">Immerse yourself in heart-pounding action!</h2>
+            <p class="sub reveal d2">From birthday parties to team-building events, every experience is designed to deliver a fully immersive, unforgettable Nerf battle. Pop-A-Nerf Entertainment brings the action directly to you.</p>
+            <p class="sub reveal d2" style="margin-top:1rem">We construct a <strong>completely enclosed Nerf War arena at your location</strong> — designed to contain the action and deliver a true, immersive battle experience. With barricades, bases, and a fully stocked armory, your arena is built for nonstop gameplay.</p>
+            <p class="sub reveal d3" style="margin-top:1rem">We provide everything: blasters, darts, protective eyewear, and a <strong>dedicated Nerf Event Coordinator</strong> who runs all games from start to finish. Two full hours inside a real, enclosed battlefield — no downtime, just action.</p>
+            <div class="gear-chips reveal d3">
+              <span class="gear-chip">Blasters</span>
+              <span class="gear-chip">High-volume darts</span>
+              <span class="gear-chip">Protective eyewear</span>
+              <span class="gear-chip">Event coordinator</span>
+              <span class="gear-chip">Barricades &amp; bases</span>
+            </div>
+          </div>
+          <div class="exp-collage reveal d2">
+            <figure>
+              <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQUjgIVujnBbXwrZIMjFjYVCusrAUzqZz1LN8c7s32HU7kp0nTEV47O4w7VJuYmEJM6y7dAvp-Hkt22GTX3xEbTolyaJuLCrcw2JvTzmDCc90kHFEnbTg_k0goGSRo4QLG9PUlcBdT0GOijVZTyBADI0hamwEnLFZB_TfGNGGx0zfMBff6BKh1HOI244UixC5Tf-EBmV1zi9LDqLW0rbE7_zTaVuWRfsl_2xkBAS3oQ=w1280" alt="Pop-A-Nerf players taking cover behind arena barricades during a hosted battle" loading="lazy">
+              <figcaption>Enclosed arena</figcaption>
+            </figure>
+            <figure>
+              <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQVS5g7Qz6_egcghwNZBgYW4hrPXpz69vtGzmNSNlGjoy8G_T4XcPJDKyUaSjDXKsbMnrETas0AoV9mDWCPRv9MEsRuNSFJUwtrsZpHDIvPaSMZNrjxrF6tMnzWtPF8KBY3G09ZihiJXSQhpFjKi99-E768yKlsnaTeMcW-e0E1kwF4mBbuAXmp3BHT9HQlZxeeT3W9fL_c6dxffKExpCnDvL1rX-y3PPfrMyyMI=w1280" alt="Fully stocked Pop-A-Nerf armory with blasters ready for players" loading="lazy">
+              <figcaption>Fully stocked armory</figcaption>
+            </figure>
+            <figure>
+              <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQXeb_of_RQJQJEeJ8tg7tiImon2TddvbhCs1jALcRLm4j645OCLhD9cwO9QCecH8Mv3Qyu0_bA4ms53suADSoKpw9abcoP2PNducr5Vn7xmgqUV52Ob8-NelfF29Oq3Rw1vLK_xBLjGgK9y45h6yCHn3-R6noUtIpOpWmIDOhNNTP3FY4lv0pEIr23WYnLQ4wP9lVgnGm0Sq-hlhN55ZRcTB380vDd1788aBiEuI_s=w1280" alt="Teams facing off in a Pop-A-Nerf Nerf battle with protective eyewear" loading="lazy">
+              <figcaption>Team battles</figcaption>
+            </figure>
+            <figure>
+              <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQVRN3DMjQUnxLXXYipv7oZUqKeBJPos-mJsGIrLvES-JrOJdeKixWwt9BLZaYCKVuUEid8jsuBZaAKKwcF9vy7WeMzw8e4MhEXHCb_wnNDC5eVWBtnHAKh6LkWjxd51BoTuYtwFg4bbytp0_62y10Z88BQh87JMex9vg9OxKWJ7PN3tPfZjIZg4bzyUV7FpqbPdnyCyG2hkjg6-RUuQmWpihMitmBJAKeerqIeF5qM=w1280" alt="High-energy Pop-A-Nerf gameplay with barricades and game props" loading="lazy">
+              <figcaption>Nonstop action</figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <div class="what-we-do reveal">
+          <p class="big">This is <em>what we do!</em></p>
+          <div>
+            <p class="sub">Inside or outside — home, park, playground, parking lot, or office — we transform almost any environment into a fully enclosed, battle-ready Nerf War zone. This is the next level of family entertainment — immersive, high-energy, and built for real gameplay. An experience your guests won't forget.</p>
+            <div class="loc-chips">
+              <span class="loc-chip">Home</span>
+              <span class="loc-chip">Park</span>
+              <span class="loc-chip">Playground</span>
+              <span class="loc-chip">Parking lot</span>
+              <span class="loc-chip">Office</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== ZONES ===================== -->
+    <section class="zones" id="zones">
+      <div class="container">
+        <p class="label reveal">Anywhere becomes a battlefield</p>
+        <h2 class="h2 reveal d1">Pick your arena</h2>
+        <p class="sub reveal d2">Parks, back yards, corporate campuses, youth group halls — if there's space, we'll turn it into a war zone. Explore the battles.</p>
+        <div class="zone-grid">
+          <a class="zone-card reveal" href="https://www.popanerf.com/galleries/parks">
+            <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQXHLWn1gR4HJxYSWT_EI7EN5BlXA__uDhnWLbCM__WR--uRpA9KnDE-ILIJMxDkmIJ8vUbnzArRhZ08kdDgHThVOThXUvS7PIXltS7VJ0QM21I3HsyLuI5OyFASRAEbYwyOuogRElDBWrlnMQWAFnj8zJrnwyBjsBuTfnFUHNJzzoDW00kkdkt5YV6sTrvOunqS4sxqt2-AiCbWbw_CA2N7LVDnm30DZcatK5hKNZY=w1280" alt="Pop-A-Nerf enclosed arena set up for a Nerf battle in a public park" loading="lazy">
+            <div class="zone-body">
+              <h3>Parks</h3>
+              <p>Open fields become full-scale battlegrounds.</p>
+              <span class="zone-link">Explore <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+          </a>
+          <a class="zone-card reveal d1" href="https://www.popanerf.com/galleries/back-yards">
+            <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQX0D7U7pb7_hzcns60HZ2SUOKKWSjZizqdfGNKfSSOwHpYbt4OGgv0UyVxdjw4T5ovVzxw7S1Cq-DNPHD64wFyuow_hUgfBz9LJTrfEaNrf7lDJ3WmYYJKNsCCcrokW6DmcTpZncrJHaWq0JDT_2riyEMbibCOQzmlQuDaVRC3P69wUwEbpC-lcMlr-XkOTKmHXTUDSdsDER9LKAGW0BU2kYMPCoACY0PMUozy8j54=w1280" alt="Pop-A-Nerf mobile arena transforming a back yard into a Nerf battlefield" loading="lazy">
+            <div class="zone-body">
+              <h3>Back Yards</h3>
+              <p>Your own turf, turned into enemy territory.</p>
+              <span class="zone-link">Explore <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+          </a>
+          <a class="zone-card reveal d2" href="https://www.popanerf.com/galleries/corporate-events">
+            <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQVrhHW07L4FbMSRj_w8e6idhpV_oINY6Fxob_qvvLV-Yqg4tBctcqjEmbqqKpOU1Guqp1TNSD3nT7GlyS-ad0P-jvm0pgmIBg0sBZTsdepsa_CIAupm0kEmt94utaxdCu1BSaIelXaFGBmHau3Tibrgj-HnCeH8Vghe7d2IOarY_72682cot8Hmu9VP3oNLrLo-xeimjNaGVyMttQtwHQ8D2S6rXV1zSPE2OxEJC7Y=w1280" alt="Corporate team-building group battling in a Pop-A-Nerf arena" loading="lazy">
+            <div class="zone-body">
+              <h3>Corporate Events</h3>
+              <p>Team building with way more adrenaline.</p>
+              <span class="zone-link">Explore <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+          </a>
+          <a class="zone-card reveal d3" href="https://www.popanerf.com/galleries/youth-groups">
+            <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQXyFruSLhaxsCcwQbln6r-znLIQ4dI80WN692aofUJwHi-ptmmTh3gevXf1juToNcrYc94KYpAQcOiJYtje6vC9gTwrACmiNmq9ULA8uQo182jgioRyBGAL50IYrgaYp3tjAJli61fhARjeQPYK4hoYtqK6dJDmieznnpr0W29nBB_GZYGL9-7HmYXiTuPrdxCAjLLKBLL15v5Y_i1J3ewntpL8jESC4rfJnrj2vZE=w1280" alt="Youth group players enjoying a hosted Pop-A-Nerf Nerf war event" loading="lazy">
+            <div class="zone-body">
+              <h3>Youth Groups</h3>
+              <p>High-energy fun that keeps everyone engaged.</p>
+              <span class="zone-link">Explore <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== INCLUDED ===================== -->
+    <section class="included" id="included">
+      <div class="container">
+        <p class="label reveal">Standard event package</p>
+        <h2 class="h2 reveal d1">Every event comes loaded</h2>
+        <p class="sub reveal d2">No hidden extras — the standard package includes everything below, every single time.</p>
+        <div class="include-grid">
+          <div class="include-item reveal">
+            <span class="check"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
+            <p><b>2 hours of hosted gameplay</b>Up to two full hours of fully hosted action.</p>
+          </div>
+          <div class="include-item reveal d1">
+            <span class="check"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
+            <p><b>Mobile battle arena</b>A complete mobile Nerf battle arena set up at your location.</p>
+          </div>
+          <div class="include-item reveal d2">
+            <span class="check"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
+            <p><b>Blasters for all players</b>A wide selection of Nerf blasters for every participant.</p>
+          </div>
+          <div class="include-item reveal d3">
+            <span class="check"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
+            <p><b>Safety eye protection</b>Protective eyewear for every single participant.</p>
+          </div>
+          <div class="include-item reveal">
+            <span class="check"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
+            <p><b>High-volume dart supply</b>Continuous action — no waiting, no reloading delays.</p>
+          </div>
+          <div class="include-item reveal d1">
+            <span class="check"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
+            <p><b>Team battle equipment</b>Flags and game props for mission-style play.</p>
+          </div>
+          <div class="include-item reveal d2">
+            <span class="check"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
+            <p><b>Battle barriers</b>Strategically placed cover for real gameplay dynamics.</p>
+          </div>
+          <div class="include-item reveal d3">
+            <span class="check"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
+            <p><b>Dedicated battle referee</b>A Nerf Battle Referee runs all games from start to finish.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== PRICING ===================== -->
+    <section class="pricing" id="pricing">
+      <div class="container">
+        <p class="label reveal">Pricing</p>
+        <h2 class="h2 reveal d1">Bigger squad. Bigger battle.</h2>
+        <p class="sub reveal d2">Our pricing is based on group size to ensure every event delivers a full-scale battle experience. As your group grows, we expand the arena, increase equipment, and adjust staffing to match — so every player stays fully engaged from start to finish. <strong>The more players you bring, the bigger and more immersive the battle becomes.</strong></p>
+
+        <div class="price-grid">
+          <div class="price-card featured reveal">
+            <span class="flag">Minimum booking</span>
+            <p class="players">1 – 15 participants</p>
+            <p class="amount"><sup>$</sup>595</p>
+            <p class="note">The full arena experience for smaller squads.</p>
+          </div>
+          <div class="price-card reveal d1">
+            <p class="players">16 – 20 participants</p>
+            <p class="amount"><sup>$</sup>695</p>
+            <p class="note">Expanded arena, more gear, more chaos.</p>
+          </div>
+          <div class="price-card reveal d2">
+            <p class="players">21 – 25 participants</p>
+            <p class="amount"><sup>$</sup>795</p>
+            <p class="note">A full-scale battle for a serious crew.</p>
+          </div>
+          <div class="price-card reveal">
+            <p class="players">26 – 30 participants</p>
+            <p class="amount"><sup>$</sup>895</p>
+            <p class="note">Bigger battlefield, bigger firefights.</p>
+          </div>
+          <div class="price-card reveal d1">
+            <p class="players">31 – 35 participants</p>
+            <p class="amount"><sup>$</sup>995</p>
+            <p class="note">Maximum immersion for large groups.</p>
+          </div>
+          <div class="price-card special reveal d2">
+            <p class="players">36 or more participants</p>
+            <p class="amount">Special pricing</p>
+            <p class="note">Requires special pricing — call us and we'll build a custom quote for your mega-battle.</p>
+          </div>
+        </div>
+
+        <div class="pricing-cta reveal">
+          <a class="btn btn-primary" href="https://www.popanerf.com/book-now">Book Now</a>
+          <a class="call-banner" href="tel:+17866716373">Call <span>&nbsp;786-671-NERF (6373)</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== UPGRADES ===================== -->
+    <section class="upgrades" id="upgrades">
+      <div class="container">
+        <p class="label reveal">Power-ups</p>
+        <h2 class="h2 reveal d1">Game-changing upgrades</h2>
+        <p class="sub reveal d2">Enhance your event with powerful add-ons that don't just add more — <strong>they transform the entire battle experience.</strong></p>
+
+        <div class="up-grid">
+          <article class="up-card reveal">
+            <div class="up-media">
+              <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQWin86kV86K0h2GCGoR1JFl9ppKkGBJYBAegplOOFiLRb7fZ7Lgri2cVufAxaIHc628_q9Qp6l-r_8fsvmRtJ74ekOTL21P5riRdxveMEePrUoX9_y1Nl6MTA11VX8uAnN7VPCoqEVVuU8cgtzxOMI76tFEglv3rRpXRyKSlvsW5bLCM0lb4m59A0BNrgXMlel3N8PukYz7VVGkNr01zdLljX8cjWlxfTbuxAfr=w1280" alt="Extended ammo supply upgrade with 1,000 additional Nerf darts" loading="lazy">
+              <span class="up-price">$95 Upgrade</span>
+            </div>
+            <div class="up-body">
+              <h3>Extended Ammo Supply</h3>
+              <p>Includes 1,000 additional darts to maintain continuous gameplay and reduce downtime between rounds.</p>
+              <span class="up-tag">Ammo</span>
+            </div>
+          </article>
+
+          <article class="up-card reveal d1">
+            <div class="up-media">
+              <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQX9QpzbDGd5QUTo1d6CkBE5t4vW8UgixPHpyVnTYHAq_otjqgcBul_vLLllg7SB9vZmimSKrq83gBathowt6JGN_wGQsxTuPim32Nvl7W-QNqV64tjlrtxt4DU2KKw5xHwWitmFLrpo4wBGZVlbuN26IMkG1oGEc0GW8978Y0HgBxhftXf7lJ5g3EA_SpSYK6aSFXJxfZE9hzkCXCagwmZC5irDd5utrhb0-4N-=w1280" alt="Enhanced battlefield layout upgrade with four additional battle barriers" loading="lazy">
+              <span class="up-price">$125 Upgrade</span>
+            </div>
+            <div class="up-body">
+              <h3>Enhanced Battlefield Layout</h3>
+              <p>Add 4 additional barriers to increase cover, movement, and strategy for a more dynamic battle.</p>
+              <span class="up-tag">Arena</span>
+            </div>
+          </article>
+
+          <article class="up-card reveal d2">
+            <div class="up-media">
+              <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQU3JLS7rjgtMrSOVNDyrVLUnCz3wbl_dChXGYP9uw19x4CzRYADIMWGUyzxKlFvswwbTlEfQ_LUpVZpjRI3NXYmcvJJS-3bqN8RT-yeqTPUVPy757CDEZuynDqHaR-MqwOdbak3LIQXtgKLcW_PHSIMcsmSlnuP1sLLjvGnGxLinISLjBtn8SpAFewsap4CTh3tOnYNwGMeLmoyTdnT8EtCllYDvfW3tZdW-5j-NDI=w1280" alt="Tactical blaster upgrade featuring semi and fully automatic Nerf blasters" loading="lazy">
+              <span class="up-price">$125 Upgrade</span>
+            </div>
+            <div class="up-body">
+              <h3>Tactical Blaster Upgrade</h3>
+              <p>Semi and fully automatic blasters deliver faster firing, higher intensity, and a true next-level battle experience.</p>
+              <span class="up-tag">Arsenal</span>
+            </div>
+          </article>
+
+          <article class="up-card reveal d3">
+            <div class="up-media">
+              <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQXDp1FruI6TSHBjoiaH4mGSJ7NTqGXUF17pgQWVCBrkCAp3tGh7SLQiDQrNpRKCVWfRaslxnlg3WCALBSoccIlTPYDl1Yj_cDqT98LsVZDMkVoq1u3YQT1BpXo5oELrZ8XeGBybfTTm9VyTa9DARz8PzqBil5tb3HrWEim90zGhLHt8Lwtl39ky1nLS1q9OouFw7dIMg_-DoYHCPejft8GP0w8jt0z740wUtWys=w1280" alt="Themed battle experience upgrade with immersive mission scenarios" loading="lazy">
+              <span class="up-price">$150 Upgrade</span>
+            </div>
+            <div class="up-body">
+              <h3>Themed Battle Experience</h3>
+              <p>Immersive themes like Zombie Apocalypse, Fortnite, or Military — customized scenarios and mission-style battles.</p>
+              <span class="up-tag">Missions</span>
+            </div>
+          </article>
+
+          <article class="up-card reveal">
+            <div class="up-media">
+              <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQWR-M93233R8FLgti52WA56J-niCbdGk3uQuVuDPMg4g8zX18Wme-7K8C5IsxQlVnkY6yV8CXRidPOl2Icfz3ymbdjzmEPxJtmx5j8w2LqQ9s2bPkbDLo7B5he7YbH9tcI4B1XMuUGD7PWgT_OmiM9cFTm_0mXA553swsppKisCMcjDY1rWAguzBFqmkUx5eOMraLk_Rp-v1wlXLelQK-EB7Sw24OkLGCbcn0Mz95k=w1280" alt="Water-blaster upgrade for high-energy summer water battles" loading="lazy">
+              <span class="up-price">$175 Upgrade</span>
+            </div>
+            <div class="up-body">
+              <h3>Water-Blaster Upgrade</h3>
+              <p>Turn up the action and cool things down with a high-energy water battle — perfect for hot days and nonstop summer gameplay.</p>
+              <span class="up-tag">Summer</span>
+            </div>
+          </article>
+
+          <article class="up-card reveal d1">
+            <div class="up-media">
+              <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQVLuUwiDNzX6zwuudHcTRcyGqkQbaUpRXPKPTNVk4uL93Cpt2flapsnwcjx0y0-XBxDvbxz-oDPa3lEr2HqQdHlJdskggj7jTM9-t8YIFkVpMMx-OVZ6rZStTvWlUnC6n3KSjj5pJd6nrdRLLsdtegP9XJpS5TN17qcf48wU8MnxUK5NlU8LHGBE18J7T1rEKyHM4N2Um1RA-mOCOMSt5B-uBIcKh6rwOXx4Fa6ODM=w1280" alt="Night Ops mission upgrade with glow-in-the-dark blasters and illuminated ammo" loading="lazy">
+              <span class="up-price">$155 Upgrade</span>
+            </div>
+            <div class="up-body">
+              <h3>Night Ops Mission</h3>
+              <p>Battle into the dark with a light-controlled arena, glow-in-the-dark blasters, and illuminated ammo.</p>
+              <span class="up-tag">After dark</span>
+            </div>
+          </article>
+
+          <article class="up-card reveal d2">
+            <div class="up-media">
+              <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQWyCrKiskpIU-E23qQCJaqwizgU_Fwk1QchKsUvcW4-aCyU2kTNhzgwomMx-zfcvCvpbQEJ-CuOuPsULB3OcE6pr44eDhYyNXzNca94hxKwZ5uNsTVxZN2XLZMSENKrSCB16rrmj1FyNVZbHLIvjdOt8K5NzFvR66-txnqhRu2J735Cje5ubJFggYppj9G5HVvrCGtzTCt8RWVbsgNetwnKJh9r3F65X4fMuRKyMf8=w1280" alt="Grab bag upgrade with mini Nerf blaster and darts for each participant to take home" loading="lazy">
+              <span class="up-price">$7.50 / bag</span>
+            </div>
+            <div class="up-body">
+              <h3>Grab Bag Upgrade</h3>
+              <p>Each participant receives their own mini Nerf blaster and darts to take home — keeping the battle going after the event ends.</p>
+              <span class="up-tag">Party favors</span>
+            </div>
+          </article>
+
+          <article class="up-card reveal d3">
+            <div class="up-media">
+              <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQVFTblyKM6nN_JJQJNl631vwpc8KJfEHp0p1Zrl3LsnZXYknNQdgwEoLKvK3ehv5EqmJ7F1xSX3cecQSz0L3o8uZZDL5pJn-UqSAWlLvlDBVy_dN3OZC3GLzWY6AyeFfrTP7gJQgVXwSySMd_b8hJWBAJGxpm2diQ2izEXyeaYxfiNafVAlrL6j3ac34SKf0XfihlQ7UfP1atRsdsGR-zkzpjsOQ4UI9S294p20kbA=w1280" alt="Shooting gallery add-on with a second enclosed arena of skill targets" loading="lazy">
+              <span class="up-price">$175 Upgrade</span>
+            </div>
+            <div class="up-body">
+              <h3>Shooting Gallery Add-On</h3>
+              <p>A second enclosed arena dedicated to target shooting and skill-based games — a whole new way to play.</p>
+              <span class="up-tag">Second arena</span>
+            </div>
+          </article>
+
+          <article class="up-card reveal">
+            <div class="up-media">
+              <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQWiISroLftQoBDyaed9gu6G0ZUPln9cjEe1SetPzdJBGyZz5i8mmj4X0IgkL4byCkkPbZhfGFZ3AjUGhAm3Tkbr6hCiAtDSshodwo2ZMQPdjICU1t6q1AXRenqbzNGR5ChiABimAirB2R2NjMKjhGj8ynqo-UzZme6_3eZSemkbcpyhKLoGz_5Hx95WsvThDnFcRZDJOo0oz4hOe9Lq67v2xch3KM3ffxhc8RhNyLE=w1280" alt="Banquet tables add-on creating a comfortable gathering space for guests" loading="lazy">
+              <span class="up-price">$10 / table</span>
+            </div>
+            <div class="up-body">
+              <h3>Banquet Tables Add-On</h3>
+              <p>Create a clean, comfortable space for guests to gather, relax, and enjoy the event between battles.</p>
+              <span class="up-tag">Comfort</span>
+            </div>
+          </article>
+
+          <article class="up-card reveal d1">
+            <div class="up-media">
+              <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQXODBnAEYNE0SVBn2zMyOI7OMFEtYQg5Tx69nbROQaCc8wvabibTK3um2tCVNcXcb2bA4IzdSzC9Uo2pNMqmdv4jF1a2clYyUof7LvAaALRuaxPHD86pofuhvYk1P6aPE-p-GIBhX3JcVdoTrj1cxlTbgT3kzMYTIqHNFct77nCAPb6uFWJFKvFe4AePaUmNHQ7RQvbFMLAwWa8hiT_OJ2U7dpW0hHk4dDzKTA8=w1280" alt="Folding chairs add-on for extra guest seating at the event" loading="lazy">
+              <span class="up-price">$4 / chair</span>
+            </div>
+            <div class="up-body">
+              <h3>Folding Chairs</h3>
+              <p>Need extra seating? Add additional chairs for your guests. (4 chair minimum.)</p>
+              <span class="up-tag">Comfort</span>
+            </div>
+          </article>
+
+          <article class="up-card reveal d2">
+            <div class="up-media">
+              <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQU-O8EdDs27xzY2ZNvV2j1zF60ne_2RtdGRhWXciRtMEsjCMr7-qIVuTCb-FXFx2smmBTP9pkVend8D-OCsR04nH0Rflba449FpIq-9AWDXzUCieTw15Fud7i8nAPvnfNVidi6_33T1sqn_jFNUudf46WipvVctgOQJQgN6-3V-JINdacPUEyd8WojACS02_84fvc_myW94JLIbI_57c9Inf5fVLo6VKbWNcY1yln0=w1280" alt="Nerf Wars and Domino's Pizza catering partnership for hassle-free event food" loading="lazy">
+              <span class="up-price">Prices vary</span>
+            </div>
+            <div class="up-body">
+              <h3>Nerf Wars &amp; Domino's Pizza</h3>
+              <p>Pop-A-Nerf and Domino's teamed up for hassle-free, crowd-pleasing catering straight to your event. Prices vary by size and selections.</p>
+              <span class="up-tag">Catering</span>
+            </div>
+          </article>
+
+          <article class="up-card reveal d3">
+            <div class="up-media">
+              <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQVYxTbKMpfomsbIBWhq4Fm3Cp6MKNcVJdz0DHFHHHRkqFKt1QGi48Rk_QX8AvAhrFjHkXRQtOcDmhP174yiT5r9K-LmU7XCTmV4b5UMky8pvekAgHl-uK2F3mAiqL6HJ3l7cWGTj8S3VbhhT-cp7x6ZoFYuR06K9UTw1D0QZbyBEonuK78bVGlkPV1Z9RnfI6kDEIheS2o4T-nzY1LA4J3tPg7h_Ke8UW-XkiFR=w1280" alt="Mega blaster upgrade with powerful Mega blasters and oversized darts" loading="lazy">
+              <span class="up-price">$125 flat rate</span>
+            </div>
+            <div class="up-body">
+              <h3>Mega Blaster Upgrade</h3>
+              <p>Powerful Mega blasters and oversized darts that hit harder and fly farther. Includes standard Elite 2.0 and Mega darts.</p>
+              <span class="up-tag">Arsenal</span>
+            </div>
+          </article>
+
+          <article class="up-card reveal">
+            <div class="up-media">
+              <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQU5IRJxFCkOO_mCUmXHYUOnIcTEbBCH4eSGdjTMu3P1Jv0GRXa8yJ_57eqMXBxRCck7eZqNYWfNevRFlHEhSLfDeYNTpPdj5P0x5YdBHfyt4bPrlHbI_5POKVX3t0WepQPJisukrXucm-l7tI4W2yKSHHljy7WoA8ac5JVYrFEMotmm1PG_mCDR9Z7OV-M=w1280" alt="Rival blaster upgrade with high-performance blasters and round ball ammo" loading="lazy">
+              <span class="up-price">$125 flat rate</span>
+            </div>
+            <div class="up-body">
+              <h3>Rival Blaster Upgrade</h3>
+              <p>High-performance Rival blasters and round ball ammo — the fastest, hardest-hitting gameplay. Includes Elite 2.0 darts and Rival rounds.</p>
+              <span class="up-tag">Arsenal · Advanced</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== REVIEWS ===================== -->
+    <section class="reviews" id="reviews" style="padding:clamp(3.5rem,7vw,5.5rem) 0">
+      <div class="container inner reviews-flex">
+        <div style="max-width:640px">
+          <div class="stars reveal" aria-hidden="true">★★★★★</div>
+          <h2 class="reveal d1">Check out our glowing reviews</h2>
+          <p class="reveal d2">Click below to see why our customers book year after year!</p>
+          <div style="margin-top:1.8rem" class="reveal d3">
+            <a class="btn btn-dark" href="https://www.google.com/search?q=popanerf+entertainment&rlz=1C1CHZN_enUS1012US1012&oq=&aqs=chrome.0.35i39i362l8.170254771j0j15&sourceid=chrome&ie=UTF-8#lrd=0x88c2c38ed3d00513:0x4c98d03390cc939f,1,,,,">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3"/></svg>
+              See why customers rebook
+            </a>
+          </div>
+        </div>
+        <img class="review-badge reveal d2" src="https://lh3.googleusercontent.com/sitesv/AG8ngQUbLfgztCPRrAXKxiUApZI9WHBOI39YoXI3KdSuRWCcRovuzcJLTGsGAZFeaxVvkbQz1VRSNVtONvfhr17LkB4vY7cPj66ILIkj8uNnBrjVulmdOkjUR3FYnA03do_PsAXcXgi50Stfy-UEhCfvMkFCcCb14FBpm0OWsZroQzHiALIcrPo1KfwxhzRNQZKyBVlYwSoVfprq0VdzKG0jKyG8uc0ghGzBS0PS4_saIy0=w1280" alt="Pop-A-Nerf Entertainment five-star review badge from Google" loading="lazy">
+      </div>
+    </section>
+
+    <!-- ===================== FINAL CTA ===================== -->
+    <section class="final">
+      <div class="container final-inner">
+        <p class="label reveal" style="justify-content:center;display:flex">Ready for war?</p>
+        <h2 class="h2 reveal d1">Don't miss out on the ultimate Nerf war experience!</h2>
+        <p class="sub reveal d2">Choose Pop-A-Nerf Entertainment for heart-pounding action, camaraderie, and non-stop fun. Book your event now and embark on an adventure that will leave you with unforgettable memories.</p>
+        <div class="reveal d3" style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+          <a class="btn btn-primary" href="https://www.popanerf.com/book-now">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            Book your adventure today
+          </a>
+          <a class="btn btn-ghost" href="tel:+17866716373">☎ 786-671-NERF (6373)</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================== FOOTER / CONTACT ===================== -->
+  <footer id="contact">
+    <div class="container">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <a class="logo" href="#top" aria-label="Pop-A-Nerf Entertainment home">
+            <svg class="logo-bolt" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#161a24"/><path d="M36 6 12 38h12l-2 20 24-32H34l2-20z" fill="#ff6a00"/></svg>
+            <span class="logo-text">Pop-A-Nerf<small>Entertainment</small></span>
+          </a>
+          <p>We bring the ultimate Nerf War experience right to your location — a fully enclosed mobile arena, all the gear, and a dedicated Battle Referee. Birthdays, corporate events, youth groups and more.</p>
+          <a class="foot-phone" href="tel:+17866716373">Call <span>786-671-NERF (6373)</span></a>
+          <p style="margin-top:1rem"><a href="https://sites.google.com/popanerf.com/pop-a-nerf-spanish" style="color:var(--orange-2);font-weight:700">¿Habla Español? →</a></p>
+        </div>
+        <div>
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="https://www.popanerf.com/about-us">About Us</a></li>
+            <li><a href="https://www.popanerf.com/book-now">Book Now</a></li>
+            <li><a href="https://www.popanerf.com/pricing">Pricing</a></li>
+            <li><a href="https://www.popanerf.com/galleries">Gallery</a></li>
+            <li><a href="https://www.popanerf.com/company-terms-and-condition">Terms &amp; Conditions</a></li>
+            <li><a href="https://www.popanerf.com/sponsorship">Sponsorship</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>More</h4>
+          <ul>
+            <li><a href="https://www.popanerf.com/park-list">Parks List</a></li>
+            <li><a href="https://www.popanerf.com/games-safetyrules">Games / Safety / Rules</a></li>
+            <li><a href="https://www.popanerf.com/opportunities">Opportunities</a></li>
+            <li><a href="https://www.popanerf.com/faq">FAQ</a></li>
+            <li><a href="https://www.popanerf.com/up-grades">Upgrades</a></li>
+            <li><a href="https://www.popanerf.com/contact-us">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <span>© <span id="year">2026</span> Pop-A-Nerf Entertainment. All rights reserved.</span>
+        <span>Built for battle · We come to you.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Sticky header state
+    const header = document.getElementById('site-header');
+    const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 24);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    // Mobile menu
+    const burger = document.getElementById('burger');
+    const mobileNav = document.getElementById('mobile-nav');
+    const toggleMenu = (force) => {
+      const open = force !== undefined ? force : !mobileNav.classList.contains('open');
+      mobileNav.classList.toggle('open', open);
+      burger.classList.toggle('open', open);
+      burger.setAttribute('aria-expanded', String(open));
+      document.body.style.overflow = open ? 'hidden' : '';
+    };
+    burger.addEventListener('click', () => toggleMenu());
+    mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => toggleMenu(false)));
+
+    // Scroll reveal
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // Footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
